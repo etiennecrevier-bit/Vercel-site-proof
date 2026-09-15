@@ -54,6 +54,26 @@ type Dict = {
   emptyBody: string
   clearSearch: string
   loadingLabel: string
+
+  buildingsPageTitle: string
+  buildingsPageSubtitle: string
+  bSearchPlaceholder: string
+  addBuilding: string
+  shortCode: string
+  shortCodePlaceholder: string
+  aliasLabel: string
+  addAlias: string
+  active: string
+  inactive: string
+  save: string
+  saved: string
+  assignedCount: (n: number) => string
+  missingCode: string
+  toCodeCount: (n: number) => string
+  filterActive: string
+  filterInactive: string
+  filterMissingCode: string
+  bEmptyBody: string
 }
 
 const DICTS: Record<Lang, Dict> = {
@@ -107,6 +127,27 @@ const DICTS: Record<Lang, Dict> = {
     emptyBody: 'Aucun employé ne correspond à cette recherche. Vérifiez l’orthographe ou effacez la recherche.',
     clearSearch: 'Effacer la recherche',
     loadingLabel: 'Chargement du répertoire…',
+
+    buildingsPageTitle: 'Bâtiments',
+    buildingsPageSubtitle:
+      'Regroupés par client. Le code court et les alias de chaque bâtiment permettent au système de reconnaître le site à partir du message de l’employé.',
+    bSearchPlaceholder: 'Rechercher une adresse, un code, un alias…',
+    addBuilding: 'Ajouter un bâtiment',
+    shortCode: 'Code court',
+    shortCodePlaceholder: 'ex. 4080-CSC',
+    aliasLabel: 'Alias',
+    addAlias: 'Ajouter un alias',
+    active: 'Actif',
+    inactive: 'Inactif',
+    save: 'Enregistrer',
+    saved: 'Enregistré',
+    assignedCount: (n) => (n > 1 ? `${n} employés affectés` : n === 1 ? '1 employé affecté' : 'Aucun employé affecté'),
+    missingCode: 'Aucun code court',
+    toCodeCount: (n) => `${n} à coder`,
+    filterActive: 'Actifs',
+    filterInactive: 'Inactifs',
+    filterMissingCode: 'Sans code court',
+    bEmptyBody: 'Aucun bâtiment ne correspond à cette recherche. Vérifiez l’orthographe ou effacez la recherche.',
   },
   en: {
     appName: 'Site Proof',
@@ -158,6 +199,27 @@ const DICTS: Record<Lang, Dict> = {
     emptyBody: 'No employee matches this search. Check the spelling or clear the search.',
     clearSearch: 'Clear search',
     loadingLabel: 'Loading directory…',
+
+    buildingsPageTitle: 'Buildings',
+    buildingsPageSubtitle:
+      'Grouped by client. Each building’s short code and aliases let the system recognize the site from the employee’s message.',
+    bSearchPlaceholder: 'Search an address, a code, an alias…',
+    addBuilding: 'Add building',
+    shortCode: 'Short code',
+    shortCodePlaceholder: 'e.g. 4080-CSC',
+    aliasLabel: 'Aliases',
+    addAlias: 'Add alias',
+    active: 'Active',
+    inactive: 'Inactive',
+    save: 'Save',
+    saved: 'Saved',
+    assignedCount: (n) => (n > 1 ? `${n} employees assigned` : n === 1 ? '1 employee assigned' : 'No employee assigned'),
+    missingCode: 'No short code',
+    toCodeCount: (n) => `${n} to code`,
+    filterActive: 'Active',
+    filterInactive: 'Inactive',
+    filterMissingCode: 'No short code',
+    bEmptyBody: 'No building matches this search. Check the spelling or clear the search.',
   },
   es: {
     appName: 'Site Proof',
@@ -209,6 +271,27 @@ const DICTS: Record<Lang, Dict> = {
     emptyBody: 'Ningún empleado coincide con esta búsqueda. Verifique la ortografía o borre la búsqueda.',
     clearSearch: 'Borrar la búsqueda',
     loadingLabel: 'Cargando el directorio…',
+
+    buildingsPageTitle: 'Edificios',
+    buildingsPageSubtitle:
+      'Agrupados por cliente. El código corto y los alias de cada edificio permiten que el sistema reconozca el sitio a partir del mensaje del empleado.',
+    bSearchPlaceholder: 'Buscar una dirección, un código, un alias…',
+    addBuilding: 'Agregar un edificio',
+    shortCode: 'Código corto',
+    shortCodePlaceholder: 'ej. 4080-CSC',
+    aliasLabel: 'Alias',
+    addAlias: 'Agregar un alias',
+    active: 'Activo',
+    inactive: 'Inactivo',
+    save: 'Guardar',
+    saved: 'Guardado',
+    assignedCount: (n) => (n > 1 ? `${n} empleados asignados` : n === 1 ? '1 empleado asignado' : 'Ningún empleado asignado'),
+    missingCode: 'Sin código corto',
+    toCodeCount: (n) => `${n} por codificar`,
+    filterActive: 'Activos',
+    filterInactive: 'Inactivos',
+    filterMissingCode: 'Sin código corto',
+    bEmptyBody: 'Ningún edificio coincide con esta búsqueda. Verifique la ortografía o borre la búsqueda.',
   },
 }
 

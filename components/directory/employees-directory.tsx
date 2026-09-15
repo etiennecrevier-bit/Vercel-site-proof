@@ -15,6 +15,7 @@ import {
 import { TEAMS, UNASSIGNED, type Member } from '@/lib/directory-data'
 import { useDir } from '@/lib/directory-i18n'
 import { AppShell } from './app-shell'
+import { SubTabs } from './sub-tabs'
 import { TeamGroup } from './team-group'
 import { EmployeeRow } from './employee-row'
 
@@ -99,23 +100,7 @@ export function EmployeesDirectory() {
         <p className="mt-1 max-w-2xl text-pretty text-sm leading-relaxed text-muted-foreground">{t.subtitle}</p>
       </div>
 
-      {/* Sous-onglets Répertoire */}
-      <div className="mb-5 flex flex-wrap gap-1 border-b border-border">
-        {[t.tabClients, t.tabEmployees, t.tabBuildings, t.tabAssignments, t.tabTeam].map((label, i) => (
-          <span
-            key={label}
-            className={[
-              '-mb-px border-b-2 px-3 py-2 text-sm font-medium',
-              i === 1
-                ? 'border-primary text-foreground'
-                : 'border-transparent text-muted-foreground hover:text-foreground',
-            ].join(' ')}
-            aria-current={i === 1 ? 'page' : undefined}
-          >
-            {label}
-          </span>
-        ))}
-      </div>
+      <SubTabs active="employees" />
 
       {/* Barre d'outils : recherche + vue + ajout */}
       <div className="mb-4 flex flex-wrap items-center gap-3">
