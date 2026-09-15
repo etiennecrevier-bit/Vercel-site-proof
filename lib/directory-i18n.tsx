@@ -74,6 +74,26 @@ type Dict = {
   filterInactive: string
   filterMissingCode: string
   bEmptyBody: string
+
+  navHealth: string
+  healthTitle: string
+  healthSubtitle: string
+  healthReadOnly: string
+  healthAdminOnly: string
+  healthAsOf: string
+  healthAllGood: string
+  healthNeedAction: (n: number) => string
+  healthOldest: string
+  healthAndMore: (n: number) => string
+  healthClearGroup: string
+  healthWindowNote: string
+  hOpenNoReport: string
+  hInboxPhotos: string
+  hErrors7d: string
+  hStuck: string
+  hReportsNotSent: string
+  hEmailsFailed: string
+  ago: (min: number) => string
 }
 
 const DICTS: Record<Lang, Dict> = {
@@ -148,6 +168,27 @@ const DICTS: Record<Lang, Dict> = {
     filterInactive: 'Inactifs',
     filterMissingCode: 'Sans code court',
     bEmptyBody: 'Aucun bâtiment ne correspond à cette recherche. Vérifiez l’orthographe ou effacez la recherche.',
+
+    navHealth: 'Santé',
+    healthTitle: 'Santé du système',
+    healthSubtitle:
+      'Ce qui empêche une photo de devenir un rapport client. Lecture seule — chaque anomalie mène directement à l’élément à corriger.',
+    healthReadOnly: 'Lecture seule',
+    healthAdminOnly: 'Admin',
+    healthAsOf: 'Relevé à l’instant',
+    healthAllGood: 'Tout est à jour',
+    healthNeedAction: (n) => (n > 1 ? `${n} indicateurs demandent une action` : `${n} indicateur demande une action`),
+    healthOldest: 'Les plus anciens d’abord',
+    healthAndMore: (n) => `+ ${n} autres à traiter`,
+    healthClearGroup: 'Rien à signaler',
+    healthWindowNote: 'Total estimé sur les 200 interventions ouvertes les plus anciennes.',
+    hOpenNoReport: 'Interventions avec photos, sans rapport',
+    hInboxPhotos: 'Messages avec photos, non classés',
+    hErrors7d: 'Messages en erreur (7 derniers jours)',
+    hStuck: 'Messages bloqués en traitement',
+    hReportsNotSent: 'Rapports prêts, jamais transmis',
+    hEmailsFailed: 'Courriels entrants en échec',
+    ago: (m) => (m < 60 ? `il y a ${m} min` : m < 1440 ? `il y a ${Math.round(m / 60)} h` : `il y a ${Math.round(m / 1440)} j`),
   },
   en: {
     appName: 'Site Proof',
@@ -220,6 +261,27 @@ const DICTS: Record<Lang, Dict> = {
     filterInactive: 'Inactive',
     filterMissingCode: 'No short code',
     bEmptyBody: 'No building matches this search. Check the spelling or clear the search.',
+
+    navHealth: 'Health',
+    healthTitle: 'System health',
+    healthSubtitle:
+      'What is stopping a photo from becoming a client report. Read-only — each anomaly links straight to the item to fix.',
+    healthReadOnly: 'Read-only',
+    healthAdminOnly: 'Admin',
+    healthAsOf: 'As of just now',
+    healthAllGood: 'Everything is up to date',
+    healthNeedAction: (n) => (n > 1 ? `${n} indicators need action` : `${n} indicator needs action`),
+    healthOldest: 'Oldest first',
+    healthAndMore: (n) => `+ ${n} more to handle`,
+    healthClearGroup: 'Nothing to report',
+    healthWindowNote: 'Total estimated over the 200 oldest open jobs.',
+    hOpenNoReport: 'Jobs with photos, no report',
+    hInboxPhotos: 'Messages with photos, unfiled',
+    hErrors7d: 'Messages in error (last 7 days)',
+    hStuck: 'Messages stuck processing',
+    hReportsNotSent: 'Reports ready, never sent',
+    hEmailsFailed: 'Inbound emails failed',
+    ago: (m) => (m < 60 ? `${m} min ago` : m < 1440 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} d ago`),
   },
   es: {
     appName: 'Site Proof',
@@ -292,6 +354,27 @@ const DICTS: Record<Lang, Dict> = {
     filterInactive: 'Inactivos',
     filterMissingCode: 'Sin código corto',
     bEmptyBody: 'Ningún edificio coincide con esta búsqueda. Verifique la ortografía o borre la búsqueda.',
+
+    navHealth: 'Estado',
+    healthTitle: 'Estado del sistema',
+    healthSubtitle:
+      'Lo que impide que una foto se convierta en un informe para el cliente. Solo lectura — cada anomalía enlaza directamente con el elemento que hay que corregir.',
+    healthReadOnly: 'Solo lectura',
+    healthAdminOnly: 'Administrador',
+    healthAsOf: 'Consultado ahora mismo',
+    healthAllGood: 'Todo está al día',
+    healthNeedAction: (n) => (n > 1 ? `${n} indicadores requieren acción` : `${n} indicador requiere acción`),
+    healthOldest: 'Los más antiguos primero',
+    healthAndMore: (n) => `+ ${n} más por tratar`,
+    healthClearGroup: 'Nada que señalar',
+    healthWindowNote: 'Total estimado sobre las 200 intervenciones abiertas más antiguas.',
+    hOpenNoReport: 'Intervenciones con fotos, sin informe',
+    hInboxPhotos: 'Mensajes con fotos, sin clasificar',
+    hErrors7d: 'Mensajes con error (últimos 7 días)',
+    hStuck: 'Mensajes bloqueados en procesamiento',
+    hReportsNotSent: 'Informes listos, nunca enviados',
+    hEmailsFailed: 'Correos entrantes fallidos',
+    ago: (m) => (m < 60 ? `hace ${m} min` : m < 1440 ? `hace ${Math.round(m / 60)} h` : `hace ${Math.round(m / 1440)} d`),
   },
 }
 

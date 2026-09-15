@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { Camera, Inbox, ClipboardList, BookMarked, Languages, LogOut } from 'lucide-react'
+import { Camera, Inbox, ClipboardList, BookMarked, Activity, Languages, LogOut } from 'lucide-react'
 import { useDir, LANGS, type Lang } from '@/lib/directory-i18n'
 
 function NavItem({ icon, label, active }: { icon: ReactNode; label: string; active?: boolean }) {
@@ -19,7 +19,13 @@ function NavItem({ icon, label, active }: { icon: ReactNode; label: string; acti
   )
 }
 
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({
+  children,
+  active = 'directory',
+}: {
+  children: ReactNode
+  active?: 'directory' | 'health'
+}) {
   const { lang, setLang, t } = useDir()
 
   return (
@@ -41,7 +47,8 @@ export function AppShell({ children }: { children: ReactNode }) {
             <NavItem icon={<Camera className="size-4" />} label={t.navCapture} />
             <NavItem icon={<Inbox className="size-4" />} label={t.navInbox} />
             <NavItem icon={<ClipboardList className="size-4" />} label={t.navInterventions} />
-            <NavItem icon={<BookMarked className="size-4" />} label={t.navDirectory} active />
+            <NavItem icon={<BookMarked className="size-4" />} label={t.navDirectory} active={active === 'directory'} />
+            <NavItem icon={<Activity className="size-4" />} label={t.navHealth} active={active === 'health'} />
           </nav>
 
           <div className="ml-auto flex items-center gap-3">
