@@ -94,6 +94,47 @@ type Dict = {
   hReportsNotSent: string
   hEmailsFailed: string
   ago: (min: number) => string
+
+  navHealthNav: string
+  ivTitle: string
+  ivSubtitle: string
+  ivTabList: string
+  ivTabReports: string
+  ivTabByDate: string
+  ivMerge: string
+  ivNewCapture: string
+  ivSearchList: string
+  ivSearchReports: string
+  ivAllClients: string
+  ivAllTypes: string
+  ivWithPhotosOnly: string
+  ivShownCount: (shown: number, total: number) => string
+  ivLastVisit: string
+  ivPhotos: (n: number) => string
+  ivReports: (n: number) => string
+  ivToSendChip: (n: number) => string
+  ivAllCaughtUp: string
+  ivFilterToSend: string
+  ivFilterAll: string
+  ivToSendInline: (n: number) => string
+  ivStatusToSend: string
+  ivStatusSent: string
+  ivSentVia: (channel: 'email' | 'link') => string
+  ivSendNow: string
+  ivResend: string
+  ivRegenerate: string
+  ivIntervention: string
+  ivSharedReport: string
+  ivReportsN: (n: number) => string
+  ivDay: string
+  ivWeek: string
+  ivPrev: string
+  ivToday: string
+  ivNext: string
+  ivRangeSummary: (r: number, p: number) => string
+  ivEmptyDay: string
+  ivDelete: string
+  ivNoResults: string
 }
 
 const DICTS: Record<Lang, Dict> = {
@@ -189,6 +230,47 @@ const DICTS: Record<Lang, Dict> = {
     hReportsNotSent: 'Rapports prêts, jamais transmis',
     hEmailsFailed: 'Courriels entrants en échec',
     ago: (m) => (m < 60 ? `il y a ${m} min` : m < 1440 ? `il y a ${Math.round(m / 60)} h` : `il y a ${Math.round(m / 1440)} j`),
+
+    navHealthNav: 'Santé',
+    ivTitle: 'Journal des interventions',
+    ivSubtitle: 'Chaque visite, ses preuves photo et les rapports envoyés au client.',
+    ivTabList: 'Liste des interventions',
+    ivTabReports: 'Rapports',
+    ivTabByDate: 'Par date',
+    ivMerge: 'Fusionner',
+    ivNewCapture: 'Nouvelle capture',
+    ivSearchList: 'Rechercher un immeuble, un code, un client ou un bon de travail',
+    ivSearchReports: 'Chercher un client, un site ou une date',
+    ivAllClients: 'Tous les clients',
+    ivAllTypes: 'Tout',
+    ivWithPhotosOnly: 'Avec photos seulement',
+    ivShownCount: (s, t) => `${s} immeubles sur ${t}`,
+    ivLastVisit: 'Dernière visite',
+    ivPhotos: (n) => (n > 1 ? `${n} photos` : `${n} photo`),
+    ivReports: (n) => (n > 1 ? `${n} rapports` : `${n} rapport`),
+    ivToSendChip: (n) => (n > 1 ? `${n} rapports à envoyer` : `${n} rapport à envoyer`),
+    ivAllCaughtUp: 'Tous les rapports sont envoyés',
+    ivFilterToSend: 'À envoyer',
+    ivFilterAll: 'Tous',
+    ivToSendInline: (n) => (n > 1 ? `${n} à envoyer` : `${n} à envoyer`),
+    ivStatusToSend: 'À envoyer',
+    ivStatusSent: 'Envoyé',
+    ivSentVia: (c) => (c === 'email' ? 'Envoyé par courriel' : 'Envoyé par lien'),
+    ivSendNow: 'Envoyer au client',
+    ivResend: 'Renvoyer',
+    ivRegenerate: 'Régénérer',
+    ivIntervention: 'Intervention',
+    ivSharedReport: 'Rapport partagé',
+    ivReportsN: (n) => (n > 1 ? `${n} rapports` : `${n} rapport`),
+    ivDay: 'Jour',
+    ivWeek: 'Semaine',
+    ivPrev: 'Précédent',
+    ivToday: "Aujourd'hui",
+    ivNext: 'Suivant',
+    ivRangeSummary: (r, p) => `${r} rapports · ${p} photos`,
+    ivEmptyDay: 'Aucun rapport ce jour-là.',
+    ivDelete: 'Supprimer la visite',
+    ivNoResults: 'Aucune intervention ne correspond à cette recherche.',
   },
   en: {
     appName: 'Site Proof',
@@ -282,6 +364,47 @@ const DICTS: Record<Lang, Dict> = {
     hReportsNotSent: 'Reports ready, never sent',
     hEmailsFailed: 'Inbound emails failed',
     ago: (m) => (m < 60 ? `${m} min ago` : m < 1440 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} d ago`),
+
+    navHealthNav: 'Health',
+    ivTitle: 'Job log',
+    ivSubtitle: 'Every visit, its photo proof and the reports sent to the client.',
+    ivTabList: 'Job list',
+    ivTabReports: 'Reports',
+    ivTabByDate: 'By date',
+    ivMerge: 'Merge',
+    ivNewCapture: 'New capture',
+    ivSearchList: 'Search a building, a code, a client or a work order',
+    ivSearchReports: 'Search a client, a site or a date',
+    ivAllClients: 'All clients',
+    ivAllTypes: 'All',
+    ivWithPhotosOnly: 'With photos only',
+    ivShownCount: (s, t) => `${s} of ${t} buildings`,
+    ivLastVisit: 'Last visit',
+    ivPhotos: (n) => (n > 1 ? `${n} photos` : `${n} photo`),
+    ivReports: (n) => (n > 1 ? `${n} reports` : `${n} report`),
+    ivToSendChip: (n) => (n > 1 ? `${n} reports to send` : `${n} report to send`),
+    ivAllCaughtUp: 'All reports have been sent',
+    ivFilterToSend: 'To send',
+    ivFilterAll: 'All',
+    ivToSendInline: (n) => `${n} to send`,
+    ivStatusToSend: 'To send',
+    ivStatusSent: 'Sent',
+    ivSentVia: (c) => (c === 'email' ? 'Sent by email' : 'Sent by link'),
+    ivSendNow: 'Send to client',
+    ivResend: 'Resend',
+    ivRegenerate: 'Regenerate',
+    ivIntervention: 'Job',
+    ivSharedReport: 'Shared report',
+    ivReportsN: (n) => (n > 1 ? `${n} reports` : `${n} report`),
+    ivDay: 'Day',
+    ivWeek: 'Week',
+    ivPrev: 'Previous',
+    ivToday: 'Today',
+    ivNext: 'Next',
+    ivRangeSummary: (r, p) => `${r} reports · ${p} photos`,
+    ivEmptyDay: 'No report on that day.',
+    ivDelete: 'Delete visit',
+    ivNoResults: 'No job matches this search.',
   },
   es: {
     appName: 'Site Proof',
@@ -375,6 +498,47 @@ const DICTS: Record<Lang, Dict> = {
     hReportsNotSent: 'Informes listos, nunca enviados',
     hEmailsFailed: 'Correos entrantes fallidos',
     ago: (m) => (m < 60 ? `hace ${m} min` : m < 1440 ? `hace ${Math.round(m / 60)} h` : `hace ${Math.round(m / 1440)} d`),
+
+    navHealthNav: 'Estado',
+    ivTitle: 'Registro de intervenciones',
+    ivSubtitle: 'Cada visita, sus pruebas fotográficas y los informes enviados al cliente.',
+    ivTabList: 'Lista de intervenciones',
+    ivTabReports: 'Informes',
+    ivTabByDate: 'Por fecha',
+    ivMerge: 'Combinar',
+    ivNewCapture: 'Nueva captura',
+    ivSearchList: 'Buscar un edificio, un código, un cliente o una orden de trabajo',
+    ivSearchReports: 'Buscar un cliente, un sitio o una fecha',
+    ivAllClients: 'Todos los clientes',
+    ivAllTypes: 'Todo',
+    ivWithPhotosOnly: 'Solo con fotos',
+    ivShownCount: (s, t) => `${s} de ${t} edificios`,
+    ivLastVisit: 'Última visita',
+    ivPhotos: (n) => (n > 1 ? `${n} fotos` : `${n} foto`),
+    ivReports: (n) => (n > 1 ? `${n} informes` : `${n} informe`),
+    ivToSendChip: (n) => (n > 1 ? `${n} informes por enviar` : `${n} informe por enviar`),
+    ivAllCaughtUp: 'Todos los informes fueron enviados',
+    ivFilterToSend: 'Por enviar',
+    ivFilterAll: 'Todos',
+    ivToSendInline: (n) => `${n} por enviar`,
+    ivStatusToSend: 'Por enviar',
+    ivStatusSent: 'Enviado',
+    ivSentVia: (c) => (c === 'email' ? 'Enviado por correo' : 'Enviado por enlace'),
+    ivSendNow: 'Enviar al cliente',
+    ivResend: 'Reenviar',
+    ivRegenerate: 'Regenerar',
+    ivIntervention: 'Intervención',
+    ivSharedReport: 'Informe compartido',
+    ivReportsN: (n) => (n > 1 ? `${n} informes` : `${n} informe`),
+    ivDay: 'Día',
+    ivWeek: 'Semana',
+    ivPrev: 'Anterior',
+    ivToday: 'Hoy',
+    ivNext: 'Siguiente',
+    ivRangeSummary: (r, p) => `${r} informes · ${p} fotos`,
+    ivEmptyDay: 'Ningún informe ese día.',
+    ivDelete: 'Eliminar la visita',
+    ivNoResults: 'Ninguna intervención coincide con esta búsqueda.',
   },
 }
 
