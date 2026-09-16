@@ -1,16 +1,10 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { ClipboardList, FileText, CalendarDays, Search, GitMerge, Camera, Send, Check } from 'lucide-react'
+import { ClipboardList, FileText, CalendarDays, Search, GitMerge, Camera, Clock, Check } from 'lucide-react'
 import { useDir } from '@/lib/directory-i18n'
-import {
-  BUILDINGS,
-  TOTAL_BUILDINGS,
-  TOTAL_TO_SEND,
-  buildingReports,
-  flattenReports,
-  unsentCount,
-} from '@/lib/interventions-data'
+import { TOTAL_BUILDINGS, buildingReports, flattenReports, untreatedCount } from '@/lib/interventions-data'
+import { TreatmentProvider, useTreatment } from './treatment-context'
 import { ListView } from './list-view'
 import { ReportsView } from './reports-view'
 import { DateView } from './date-view'
@@ -18,16 +12,28 @@ import { DateView } from './date-view'
 type View = 'list' | 'reports' | 'byDate'
 
 export function InterventionsLog() {
+  return (
+    <TreatmentProvider>
+      <InterventionsLogInner />
+    </TreatmentProvider>
+  )
+}
+
+function InterventionsLogInner() {
   const { t } = useDir()
+  const { buildings: allBuildings } = useTreatment()
   const [view, setView] = useState<View>('list')
   const [query, setQuery] = useState('')
-  const [onlyToSend, setOnlyToSend] = useState(false)
+  const [onlyToTreat, setOnlyToTreat] = useState(false)
 
   const q = query.trim().toLowerCase()
 
+  const allReports = useMemo(() => flattenReports(allBuildings), [allBuildings])
+  const toTreatTotal = useMemo(() => untreatedCount(allReports), [allReports])
+
   const buildings = useMemo(() => {
-    return BUILDINGS.filter((b) => {
-      if (onlyToSend && unsentCount(buildingReports(b)) === 0) return false
+    return allBuildings.filter((b) => {
+      if (onlyToTreat && untreatedCount(buildingReports(b)) === 0) return false
       if (!q) return true
       return (
         b.name.toLowerCase().includes(q) ||
@@ -36,11 +42,11 @@ export function InterventionsLog() {
         b.visits.some((v) => v.employee.toLowerCase().includes(q))
       )
     })
-  }, [q, onlyToSend])
+  }, [allBuildings, q, onlyToTreat])
 
   const reports = useMemo(() => {
-    return flattenReports().filter((r) => {
-      if (onlyToSend && r.status !== 'not_sent') return false
+    return allReports.filter((r) => {
+      if (onlyToTreat && r.disposition !== 'a_traiter') return false
       if (!q) return true
       return (
         r.site.toLowerCase().includes(q) ||
@@ -49,7 +55,7 @@ export function InterventionsLog() {
         r.date.includes(q)
       )
     })
-  }, [q, onlyToSend])
+  }, [allReports, q, onlyToTreat])
 
   const tabs: { key: View; label: string; icon: typeof ClipboardList }[] = [
     { key: 'list', label: t.ivTabList, icon: ClipboardList },
@@ -86,32 +92,32 @@ export function InterventionsLog() {
       {/* Actionable summary — the worklist framing */}
       <button
         type="button"
-        onClick={() => setOnlyToSend((v) => !v)}
-        aria-pressed={onlyToSend}
+        onClick={() => setOnlyToTreat((v) => !v)}
+        aria-pressed={onlyToTreat}
         className={[
           'mb-6 flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition-colors',
-          TOTAL_TO_SEND === 0
+          toTreatTotal === 0
             ? 'border-border bg-card'
-            : onlyToSend
+            : onlyToTreat
               ? 'border-attention bg-attention-muted'
               : 'border-attention/40 bg-attention-muted/50 hover:bg-attention-muted',
         ].join(' ')}
       >
-        {TOTAL_TO_SEND === 0 ? (
+        {toTreatTotal === 0 ? (
           <>
             <span className="inline-flex size-9 items-center justify-center rounded-full bg-success-muted text-success-foreground">
               <Check className="size-5" aria-hidden />
             </span>
-            <span className="font-medium text-foreground">{t.ivAllCaughtUp}</span>
+            <span className="font-medium text-foreground">{t.ivAllTreated}</span>
           </>
         ) : (
           <>
             <span className="inline-flex size-9 items-center justify-center rounded-full bg-attention text-primary-foreground">
-              <Send className="size-4" aria-hidden />
+              <Clock className="size-4" aria-hidden />
             </span>
-            <span className="text-base font-semibold text-attention-foreground">{t.ivToSendChip(TOTAL_TO_SEND)}</span>
+            <span className="text-base font-semibold text-attention-foreground">{t.ivToTreatChip(toTreatTotal)}</span>
             <span className="ml-auto text-sm font-medium text-attention-foreground">
-              {onlyToSend ? t.ivFilterAll : t.ivFilterToSend}
+              {onlyToTreat ? t.ivFilterAll : t.ivFilterToTreat}
             </span>
           </>
         )}
@@ -161,7 +167,7 @@ export function InterventionsLog() {
 
       {view === 'list' ? <ListView buildings={buildings} /> : null}
       {view === 'reports' ? <ReportsView reports={reports} /> : null}
-      {view === 'byDate' ? <DateView reports={flattenReports()} /> : null}
+      {view === 'byDate' ? <DateView reports={allReports} /> : null}
     </div>
   )
 }

@@ -112,20 +112,25 @@ type Dict = {
   ivLastVisit: string
   ivPhotos: (n: number) => string
   ivReports: (n: number) => string
-  ivToSendChip: (n: number) => string
-  ivAllCaughtUp: string
-  ivFilterToSend: string
+  ivReportsN: (n: number) => string
+  ivToTreatChip: (n: number) => string
+  ivAllTreated: string
+  ivFilterToTreat: string
   ivFilterAll: string
-  ivToSendInline: (n: number) => string
-  ivStatusToSend: string
-  ivStatusSent: string
-  ivSentVia: (channel: 'email' | 'link') => string
-  ivSendNow: string
-  ivResend: string
+  ivToTreatInline: (n: number) => string
+  ivMarkAs: string
+  ivDispToTreat: string
+  ivDispSendClient: string
+  ivDispInternal: string
+  ivDispArchive: string
+  ivStateToTreat: string
+  ivStateSentClient: string
+  ivStateInternal: string
+  ivStateArchived: string
+  ivSignedBy: (who: string) => string
   ivRegenerate: string
   ivIntervention: string
   ivSharedReport: string
-  ivReportsN: (n: number) => string
   ivDay: string
   ivWeek: string
   ivPrev: string
@@ -233,7 +238,7 @@ const DICTS: Record<Lang, Dict> = {
 
     navHealthNav: 'Santé',
     ivTitle: 'Journal des interventions',
-    ivSubtitle: 'Chaque visite, ses preuves photo et les rapports envoyés au client.',
+    ivSubtitle: 'Chaque visite, ses preuves photo et le suivi du traitement des rapports.',
     ivTabList: 'Liste des interventions',
     ivTabReports: 'Rapports',
     ivTabByDate: 'Par date',
@@ -248,20 +253,25 @@ const DICTS: Record<Lang, Dict> = {
     ivLastVisit: 'Dernière visite',
     ivPhotos: (n) => (n > 1 ? `${n} photos` : `${n} photo`),
     ivReports: (n) => (n > 1 ? `${n} rapports` : `${n} rapport`),
-    ivToSendChip: (n) => (n > 1 ? `${n} rapports à envoyer` : `${n} rapport à envoyer`),
-    ivAllCaughtUp: 'Tous les rapports sont envoyés',
-    ivFilterToSend: 'À envoyer',
+    ivReportsN: (n) => (n > 1 ? `${n} rapports` : `${n} rapport`),
+    ivToTreatChip: (n) => (n > 1 ? `${n} rapports à traiter` : `${n} rapport à traiter`),
+    ivAllTreated: 'Tous les rapports sont traités',
+    ivFilterToTreat: 'À traiter',
     ivFilterAll: 'Tous',
-    ivToSendInline: (n) => (n > 1 ? `${n} à envoyer` : `${n} à envoyer`),
-    ivStatusToSend: 'À envoyer',
-    ivStatusSent: 'Envoyé',
-    ivSentVia: (c) => (c === 'email' ? 'Envoyé par courriel' : 'Envoyé par lien'),
-    ivSendNow: 'Envoyer au client',
-    ivResend: 'Renvoyer',
+    ivToTreatInline: (n) => `${n} à traiter`,
+    ivMarkAs: 'Marquer comme…',
+    ivDispToTreat: 'À traiter',
+    ivDispSendClient: 'Envoyer au client',
+    ivDispInternal: 'Traiter à l’interne',
+    ivDispArchive: 'Archiver',
+    ivStateToTreat: 'À traiter',
+    ivStateSentClient: 'Envoyé au client',
+    ivStateInternal: 'Traité à l’interne',
+    ivStateArchived: 'Archivé',
+    ivSignedBy: (who) => `par ${who}`,
     ivRegenerate: 'Régénérer',
     ivIntervention: 'Intervention',
     ivSharedReport: 'Rapport partagé',
-    ivReportsN: (n) => (n > 1 ? `${n} rapports` : `${n} rapport`),
     ivDay: 'Jour',
     ivWeek: 'Semaine',
     ivPrev: 'Précédent',
@@ -367,7 +377,7 @@ const DICTS: Record<Lang, Dict> = {
 
     navHealthNav: 'Health',
     ivTitle: 'Job log',
-    ivSubtitle: 'Every visit, its photo proof and the reports sent to the client.',
+    ivSubtitle: 'Every visit, its photo proof and the status of each report.',
     ivTabList: 'Job list',
     ivTabReports: 'Reports',
     ivTabByDate: 'By date',
@@ -382,20 +392,25 @@ const DICTS: Record<Lang, Dict> = {
     ivLastVisit: 'Last visit',
     ivPhotos: (n) => (n > 1 ? `${n} photos` : `${n} photo`),
     ivReports: (n) => (n > 1 ? `${n} reports` : `${n} report`),
-    ivToSendChip: (n) => (n > 1 ? `${n} reports to send` : `${n} report to send`),
-    ivAllCaughtUp: 'All reports have been sent',
-    ivFilterToSend: 'To send',
+    ivReportsN: (n) => (n > 1 ? `${n} reports` : `${n} report`),
+    ivToTreatChip: (n) => (n > 1 ? `${n} reports to process` : `${n} report to process`),
+    ivAllTreated: 'All reports have been processed',
+    ivFilterToTreat: 'To process',
     ivFilterAll: 'All',
-    ivToSendInline: (n) => `${n} to send`,
-    ivStatusToSend: 'To send',
-    ivStatusSent: 'Sent',
-    ivSentVia: (c) => (c === 'email' ? 'Sent by email' : 'Sent by link'),
-    ivSendNow: 'Send to client',
-    ivResend: 'Resend',
+    ivToTreatInline: (n) => `${n} to process`,
+    ivMarkAs: 'Mark as…',
+    ivDispToTreat: 'To process',
+    ivDispSendClient: 'Send to client',
+    ivDispInternal: 'Handle internally',
+    ivDispArchive: 'Archive',
+    ivStateToTreat: 'To process',
+    ivStateSentClient: 'Sent to client',
+    ivStateInternal: 'Handled internally',
+    ivStateArchived: 'Archived',
+    ivSignedBy: (who) => `by ${who}`,
     ivRegenerate: 'Regenerate',
     ivIntervention: 'Job',
     ivSharedReport: 'Shared report',
-    ivReportsN: (n) => (n > 1 ? `${n} reports` : `${n} report`),
     ivDay: 'Day',
     ivWeek: 'Week',
     ivPrev: 'Previous',
@@ -501,7 +516,7 @@ const DICTS: Record<Lang, Dict> = {
 
     navHealthNav: 'Estado',
     ivTitle: 'Registro de intervenciones',
-    ivSubtitle: 'Cada visita, sus pruebas fotográficas y los informes enviados al cliente.',
+    ivSubtitle: 'Cada visita, sus pruebas fotográficas y el estado de cada informe.',
     ivTabList: 'Lista de intervenciones',
     ivTabReports: 'Informes',
     ivTabByDate: 'Por fecha',
@@ -516,20 +531,25 @@ const DICTS: Record<Lang, Dict> = {
     ivLastVisit: 'Última visita',
     ivPhotos: (n) => (n > 1 ? `${n} fotos` : `${n} foto`),
     ivReports: (n) => (n > 1 ? `${n} informes` : `${n} informe`),
-    ivToSendChip: (n) => (n > 1 ? `${n} informes por enviar` : `${n} informe por enviar`),
-    ivAllCaughtUp: 'Todos los informes fueron enviados',
-    ivFilterToSend: 'Por enviar',
+    ivReportsN: (n) => (n > 1 ? `${n} informes` : `${n} informe`),
+    ivToTreatChip: (n) => (n > 1 ? `${n} informes por tratar` : `${n} informe por tratar`),
+    ivAllTreated: 'Todos los informes fueron tratados',
+    ivFilterToTreat: 'Por tratar',
     ivFilterAll: 'Todos',
-    ivToSendInline: (n) => `${n} por enviar`,
-    ivStatusToSend: 'Por enviar',
-    ivStatusSent: 'Enviado',
-    ivSentVia: (c) => (c === 'email' ? 'Enviado por correo' : 'Enviado por enlace'),
-    ivSendNow: 'Enviar al cliente',
-    ivResend: 'Reenviar',
+    ivToTreatInline: (n) => `${n} por tratar`,
+    ivMarkAs: 'Marcar como…',
+    ivDispToTreat: 'Por tratar',
+    ivDispSendClient: 'Enviar al cliente',
+    ivDispInternal: 'Tratar internamente',
+    ivDispArchive: 'Archivar',
+    ivStateToTreat: 'Por tratar',
+    ivStateSentClient: 'Enviado al cliente',
+    ivStateInternal: 'Tratado internamente',
+    ivStateArchived: 'Archivado',
+    ivSignedBy: (who) => `por ${who}`,
     ivRegenerate: 'Regenerar',
     ivIntervention: 'Intervención',
     ivSharedReport: 'Informe compartido',
-    ivReportsN: (n) => (n > 1 ? `${n} informes` : `${n} informe`),
     ivDay: 'Día',
     ivWeek: 'Semana',
     ivPrev: 'Anterior',

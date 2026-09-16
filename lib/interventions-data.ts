@@ -1,11 +1,19 @@
-export type SendStatus = 'not_sent' | 'sent_email' | 'sent_link'
+export type Disposition = 'a_traiter' | 'envoyer_client' | 'traite_interne' | 'archive'
+
+/** Who processed a report and when — the "signature employé". */
+export type Signature = {
+  employee: string
+  /** ISO datetime */
+  at: string
+}
 
 export type Report = {
   id: string
   photoCount: number
-  status: SendStatus
-  /** ISO datetime when the report was sent to the client */
-  sentAt?: string
+  /** What was decided for this report. `a_traiter` means it still needs a human. */
+  disposition: Disposition
+  /** Present once the report is processed (disposition !== 'a_traiter'). */
+  signature?: Signature
 }
 
 export type Visit = {
@@ -39,8 +47,12 @@ export type FlatReport = Report & {
 /**
  * Sample intervention log. Buildings, clients, cities, employees and photo
  * counts are drawn from the real Interventions screens so the redesign reads
- * against believable data. Most reports are intentionally `not_sent` — the
- * real pain point is reports that are ready but never delivered to the client.
+ * against believable data.
+ *
+ * The load-bearing state is treatment: a generated report is not automatically
+ * "done". Someone on the team must review it and decide what happens — send it
+ * to the client, handle it internally, or archive it — which stamps a
+ * signature. Most reports below are still `a_traiter` (awaiting a human).
  */
 export const BUILDINGS: BuildingLog[] = [
   {
@@ -54,7 +66,7 @@ export const BUILDINGS: BuildingLog[] = [
         date: '2026-09-15',
         employee: 'Jorge Ramirez',
         photoCount: 23,
-        reports: [{ id: 'r-kirkland-1', photoCount: 23, status: 'not_sent' }],
+        reports: [{ id: 'r-kirkland-1', photoCount: 23, disposition: 'a_traiter' }],
       },
     ],
   },
@@ -69,7 +81,7 @@ export const BUILDINGS: BuildingLog[] = [
         date: '2026-09-15',
         employee: 'Douha Bousbia Salah',
         photoCount: 10,
-        reports: [{ id: 'r-herron-1', photoCount: 10, status: 'not_sent' }],
+        reports: [{ id: 'r-herron-1', photoCount: 10, disposition: 'a_traiter' }],
       },
     ],
   },
@@ -85,8 +97,13 @@ export const BUILDINGS: BuildingLog[] = [
         employee: 'Antoine Bégin',
         photoCount: 59,
         reports: [
-          { id: 'r-audy-1', photoCount: 34, status: 'sent_email', sentAt: '2026-09-15T16:10' },
-          { id: 'r-audy-2', photoCount: 25, status: 'not_sent' },
+          {
+            id: 'r-audy-1',
+            photoCount: 34,
+            disposition: 'envoyer_client',
+            signature: { employee: 'Antoine Bégin', at: '2026-09-15T16:10' },
+          },
+          { id: 'r-audy-2', photoCount: 25, disposition: 'a_traiter' },
         ],
       },
     ],
@@ -103,8 +120,8 @@ export const BUILDINGS: BuildingLog[] = [
         employee: 'Edicson Vigil',
         photoCount: 76,
         reports: [
-          { id: 'r-drummond-1', photoCount: 40, status: 'not_sent' },
-          { id: 'r-drummond-2', photoCount: 36, status: 'not_sent' },
+          { id: 'r-drummond-1', photoCount: 40, disposition: 'a_traiter' },
+          { id: 'r-drummond-2', photoCount: 36, disposition: 'a_traiter' },
         ],
       },
       {
@@ -113,9 +130,19 @@ export const BUILDINGS: BuildingLog[] = [
         employee: 'Edicson Vigil',
         photoCount: 95,
         reports: [
-          { id: 'r-drummond-3', photoCount: 41, status: 'sent_email', sentAt: '2026-09-14T18:02' },
-          { id: 'r-drummond-4', photoCount: 30, status: 'not_sent' },
-          { id: 'r-drummond-5', photoCount: 24, status: 'not_sent' },
+          {
+            id: 'r-drummond-3',
+            photoCount: 41,
+            disposition: 'envoyer_client',
+            signature: { employee: 'Edicson Vigil', at: '2026-09-14T18:02' },
+          },
+          { id: 'r-drummond-4', photoCount: 30, disposition: 'a_traiter' },
+          {
+            id: 'r-drummond-5',
+            photoCount: 24,
+            disposition: 'traite_interne',
+            signature: { employee: 'Edicson Vigil', at: '2026-09-14T18:20' },
+          },
         ],
       },
     ],
@@ -131,7 +158,14 @@ export const BUILDINGS: BuildingLog[] = [
         date: '2026-09-14',
         employee: 'Jean Benchimy',
         photoCount: 150,
-        reports: [{ id: 'r-stjean-1', photoCount: 150, status: 'sent_email', sentAt: '2026-09-14T20:41' }],
+        reports: [
+          {
+            id: 'r-stjean-1',
+            photoCount: 150,
+            disposition: 'envoyer_client',
+            signature: { employee: 'Jean Benchimy', at: '2026-09-14T20:41' },
+          },
+        ],
       },
       {
         id: 'v-stjean-2',
@@ -139,8 +173,8 @@ export const BUILDINGS: BuildingLog[] = [
         employee: 'Jean Benchimy',
         photoCount: 220,
         reports: [
-          { id: 'r-stjean-2', photoCount: 120, status: 'not_sent' },
-          { id: 'r-stjean-3', photoCount: 100, status: 'not_sent' },
+          { id: 'r-stjean-2', photoCount: 120, disposition: 'a_traiter' },
+          { id: 'r-stjean-3', photoCount: 100, disposition: 'a_traiter' },
         ],
       },
     ],
@@ -157,8 +191,8 @@ export const BUILDINGS: BuildingLog[] = [
         employee: 'Jean Benchimy',
         photoCount: 200,
         reports: [
-          { id: 'r-longueuil-1', photoCount: 110, status: 'not_sent' },
-          { id: 'r-longueuil-2', photoCount: 90, status: 'not_sent' },
+          { id: 'r-longueuil-1', photoCount: 110, disposition: 'a_traiter' },
+          { id: 'r-longueuil-2', photoCount: 90, disposition: 'a_traiter' },
         ],
       },
       {
@@ -166,7 +200,14 @@ export const BUILDINGS: BuildingLog[] = [
         date: '2026-09-14',
         employee: 'Katherine Vittini',
         photoCount: 51,
-        reports: [{ id: 'r-longueuil-3', photoCount: 51, status: 'not_sent' }],
+        reports: [
+          {
+            id: 'r-longueuil-3',
+            photoCount: 51,
+            disposition: 'archive',
+            signature: { employee: 'Katherine Vittini', at: '2026-09-14T15:00' },
+          },
+        ],
       },
     ],
   },
@@ -181,7 +222,7 @@ export const BUILDINGS: BuildingLog[] = [
         date: '2026-09-15',
         employee: 'Antoine Bégin',
         photoCount: 7,
-        reports: [{ id: 'r-abram-1', photoCount: 7, status: 'not_sent' }],
+        reports: [{ id: 'r-abram-1', photoCount: 7, disposition: 'a_traiter' }],
       },
     ],
   },
@@ -196,7 +237,14 @@ export const BUILDINGS: BuildingLog[] = [
         date: '2026-09-14',
         employee: 'Antoine Bégin',
         photoCount: 7,
-        reports: [{ id: 'r-pvm-1', photoCount: 7, status: 'not_sent' }],
+        reports: [
+          {
+            id: 'r-pvm-1',
+            photoCount: 7,
+            disposition: 'traite_interne',
+            signature: { employee: 'Antoine Bégin', at: '2026-09-14T13:30' },
+          },
+        ],
       },
     ],
   },
@@ -211,7 +259,7 @@ export const BUILDINGS: BuildingLog[] = [
         date: '2026-09-14',
         employee: 'Katherine Vittini',
         photoCount: 99,
-        reports: [{ id: 'r-sherwin-1', photoCount: 99, status: 'not_sent' }],
+        reports: [{ id: 'r-sherwin-1', photoCount: 99, disposition: 'a_traiter' }],
       },
     ],
   },
@@ -226,7 +274,7 @@ export const BUILDINGS: BuildingLog[] = [
         date: '2026-09-14',
         employee: 'Katherine Vittini',
         photoCount: 70,
-        reports: [{ id: 'r-sherwin-2', photoCount: 70, status: 'not_sent' }],
+        reports: [{ id: 'r-sherwin-2', photoCount: 70, disposition: 'a_traiter' }],
       },
     ],
   },
@@ -242,9 +290,14 @@ export const BUILDINGS: BuildingLog[] = [
         employee: 'Jorge Ramirez',
         photoCount: 198,
         reports: [
-          { id: 'r-ottawa-1', photoCount: 76, status: 'not_sent' },
-          { id: 'r-ottawa-2', photoCount: 64, status: 'not_sent' },
-          { id: 'r-ottawa-3', photoCount: 58, status: 'not_sent' },
+          { id: 'r-ottawa-1', photoCount: 76, disposition: 'a_traiter' },
+          { id: 'r-ottawa-2', photoCount: 64, disposition: 'a_traiter' },
+          {
+            id: 'r-ottawa-3',
+            photoCount: 58,
+            disposition: 'archive',
+            signature: { employee: 'Jorge Ramirez', at: '2026-09-15T09:00' },
+          },
         ],
       },
     ],
@@ -260,7 +313,7 @@ export const BUILDINGS: BuildingLog[] = [
         date: '2026-09-03',
         employee: 'Jorge Ramirez',
         photoCount: 2,
-        reports: [{ id: 'r-hb-1', photoCount: 2, status: 'not_sent' }],
+        reports: [{ id: 'r-hb-1', photoCount: 2, disposition: 'a_traiter' }],
       },
     ],
   },
@@ -275,7 +328,14 @@ export const BUILDINGS: BuildingLog[] = [
         date: '2026-09-02',
         employee: 'Douha Bousbia Salah',
         photoCount: 11,
-        reports: [{ id: 'r-td4350-1', photoCount: 11, status: 'sent_link', sentAt: '2026-09-02T11:15' }],
+        reports: [
+          {
+            id: 'r-td4350-1',
+            photoCount: 11,
+            disposition: 'envoyer_client',
+            signature: { employee: 'Douha Bousbia Salah', at: '2026-09-02T11:15' },
+          },
+        ],
       },
     ],
   },
@@ -283,6 +343,10 @@ export const BUILDINGS: BuildingLog[] = [
 
 /** Total number of buildings in the account — the list shows a filtered subset. */
 export const TOTAL_BUILDINGS = 30
+
+export function isProcessed(r: Report): boolean {
+  return r.disposition !== 'a_traiter'
+}
 
 export function buildingPhotos(b: BuildingLog): number {
   return b.visits.reduce((sum, v) => sum + v.photoCount, 0)
@@ -296,8 +360,9 @@ export function buildingLastVisit(b: BuildingLog): string {
   return b.visits.reduce((latest, v) => (v.date > latest ? v.date : latest), b.visits[0]?.date ?? '')
 }
 
-export function unsentCount(reports: Report[]): number {
-  return reports.filter((r) => r.status === 'not_sent').length
+/** Count of reports still awaiting a human decision. */
+export function untreatedCount(reports: Report[]): number {
+  return reports.filter((r) => r.disposition === 'a_traiter').length
 }
 
 export function flattenReports(buildings: BuildingLog[] = BUILDINGS): FlatReport[] {
@@ -319,5 +384,3 @@ export function flattenReports(buildings: BuildingLog[] = BUILDINGS): FlatReport
   }
   return out
 }
-
-export const TOTAL_TO_SEND = unsentCount(flattenReports())

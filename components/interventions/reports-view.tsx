@@ -3,8 +3,8 @@
 import { Building2 } from 'lucide-react'
 import { useDir } from '@/lib/directory-i18n'
 import type { FlatReport } from '@/lib/interventions-data'
-import { unsentCount } from '@/lib/interventions-data'
-import { ReportRow, ToSendPill } from './shared'
+import { untreatedCount } from '@/lib/interventions-data'
+import { ReportRow, ToTreatPill } from './shared'
 
 export function ReportsView({ reports }: { reports: FlatReport[] }) {
   const { t } = useDir()
@@ -28,7 +28,7 @@ export function ReportsView({ reports }: { reports: FlatReport[] }) {
   return (
     <div className="space-y-8">
       {[...groups.entries()].map(([client, list]) => {
-        const toSend = unsentCount(list)
+        const toTreat = untreatedCount(list)
         return (
           <section key={client}>
             <div className="mb-3 flex flex-wrap items-center gap-3">
@@ -39,7 +39,7 @@ export function ReportsView({ reports }: { reports: FlatReport[] }) {
               <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
                 {t.ivReportsN(list.length)}
               </span>
-              <ToSendPill n={toSend} />
+              <ToTreatPill n={toTreat} />
             </div>
             <div className="space-y-2">
               {list.map((r) => (

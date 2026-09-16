@@ -8,9 +8,9 @@ import {
   buildingLastVisit,
   buildingPhotos,
   buildingReports,
-  unsentCount,
+  untreatedCount,
 } from '@/lib/interventions-data'
-import { PhotoChip, ReportChip, ToSendPill, StatusPill, ReportActions } from './shared'
+import { PhotoChip, ReportChip, ToTreatPill, StatusPill, ReportActions } from './shared'
 
 function BuildingCard({ building, defaultOpen }: { building: BuildingLog; defaultOpen?: boolean }) {
   const { t } = useDir()
@@ -18,14 +18,14 @@ function BuildingCard({ building, defaultOpen }: { building: BuildingLog; defaul
 
   const reports = buildingReports(building)
   const photos = buildingPhotos(building)
-  const toSend = unsentCount(reports)
+  const toTreat = untreatedCount(reports)
   const lastVisit = buildingLastVisit(building)
 
   return (
     <div
       className={[
         'overflow-hidden rounded-xl border bg-card',
-        toSend > 0 ? 'border-l-[3px] border-l-attention border-y-border border-r-border' : 'border-border',
+        toTreat > 0 ? 'border-l-[3px] border-l-attention border-y-border border-r-border' : 'border-border',
       ].join(' ')}
     >
       <button
@@ -48,7 +48,7 @@ function BuildingCard({ building, defaultOpen }: { building: BuildingLog; defaul
           </span>
           <PhotoChip n={photos} />
           <ReportChip n={reports.length} />
-          <ToSendPill n={toSend} />
+          <ToTreatPill n={toTreat} />
         </div>
       </button>
 
@@ -56,7 +56,7 @@ function BuildingCard({ building, defaultOpen }: { building: BuildingLog; defaul
       <div className="flex flex-wrap items-center gap-2 px-4 pb-3 sm:hidden">
         <PhotoChip n={photos} />
         <ReportChip n={reports.length} />
-        <ToSendPill n={toSend} />
+        <ToTreatPill n={toTreat} />
       </div>
 
       {open ? (
@@ -78,12 +78,12 @@ function BuildingCard({ building, defaultOpen }: { building: BuildingLog; defaul
                     key={r.id}
                     className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg bg-secondary/40 px-3 py-2"
                   >
-                    <div className="w-40 shrink-0">
-                      <StatusPill status={r.status} sentAt={r.sentAt} />
+                    <div className="min-w-[13rem] shrink-0">
+                      <StatusPill report={r} />
                     </div>
                     <PhotoChip n={r.photoCount} />
                     <div className="ml-auto flex items-center gap-1.5">
-                      <ReportActions status={r.status} />
+                      <ReportActions report={r} />
                       <button
                         type="button"
                         title={t.ivDelete}
