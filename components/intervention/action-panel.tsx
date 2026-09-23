@@ -22,7 +22,13 @@ const STATES: { value: ReportState; label: string }[] = [
   { value: 'archived', label: 'Archivé' },
 ]
 
-export function ActionPanel({ intervention }: { intervention: Intervention }) {
+export function ActionPanel({
+  intervention,
+  notes,
+}: {
+  intervention: Intervention
+  notes?: React.ReactNode
+}) {
   const [workOrder, setWorkOrder] = useState(intervention.workOrder)
   const [state, setState] = useState<ReportState>(intervention.reportState)
   const [moreOpen, setMoreOpen] = useState(false)
@@ -144,6 +150,9 @@ export function ActionPanel({ intervention }: { intervention: Intervention }) {
           />
         </div>
       </div>
+
+      {/* Notes internes — entre les détails et la zone de danger */}
+      {notes}
 
       {/* Zone de danger */}
       <details className="group rounded-xl border border-border bg-card">

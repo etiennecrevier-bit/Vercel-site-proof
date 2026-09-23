@@ -41,17 +41,21 @@ export function InterventionView({ intervention }: { intervention: Intervention 
         Retour au journal
       </a>
 
-      <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-        {/* Colonne contenu — la lecture d'abord */}
-        <div className="flex flex-col gap-6">
+      <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
+        {/* Colonne actions — à gauche, collante */}
+        <div className="order-2 lg:order-1">
+          <ActionPanel
+            intervention={intervention}
+            notes={<InternalNotes initial={intervention.notes} />}
+          />
+        </div>
+
+        {/* Colonne contenu — la lecture */}
+        <div className="order-1 flex flex-col gap-6 lg:order-2">
           <Header intervention={intervention} />
           <ReportCard intervention={intervention} />
           <PhotoGallery photos={intervention.photos} />
-          <InternalNotes initial={intervention.notes} />
         </div>
-
-        {/* Colonne actions — collante */}
-        <ActionPanel intervention={intervention} />
       </div>
     </div>
   )
@@ -162,7 +166,7 @@ function InternalNotes({ initial }: { initial: InternalNote[] }) {
         Visibles seulement par le bureau — jamais dans le rapport ni le lien client.
       </p>
 
-      <div className="mt-3 flex gap-2">
+      <div className="mt-3 flex flex-col gap-2">
         <textarea
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
@@ -174,9 +178,9 @@ function InternalNotes({ initial }: { initial: InternalNote[] }) {
           }}
           rows={2}
           placeholder="Écrire une note pour le bureau"
-          className="min-h-16 flex-1 resize-y rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-3 focus-visible:ring-ring/40"
+          className="min-h-16 w-full resize-y rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-3 focus-visible:ring-ring/40"
         />
-        <Button size="lg" className="self-start" disabled={!draft.trim()} onClick={add}>
+        <Button size="lg" className="self-end" disabled={!draft.trim()} onClick={add}>
           <Plus aria-hidden />
           Ajouter
         </Button>
