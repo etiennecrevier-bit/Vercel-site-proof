@@ -116,6 +116,13 @@ export function Inbox() {
             <p className="tnum mt-0.5 text-sm text-muted-foreground">{t.dateToday}</p>
           </div>
 
+          <div className="flex items-center gap-2">
+          <a
+            href="/intervention"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            Voir une intervention
+          </a>
           {/* Sélecteur de langue */}
           <div className="flex overflow-hidden rounded-md border border-border" role="group" aria-label="Langue">
             {LANGS.map(({ code, label }) => (
@@ -131,6 +138,7 @@ export function Inbox() {
                 {label}
               </button>
             ))}
+          </div>
           </div>
         </div>
 
