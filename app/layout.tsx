@@ -7,9 +7,9 @@ const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans' })
 const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
-  title: 'Site Proof — Boîte de réception',
+  title: { default: 'Proof — Tableau de bord', template: '%s — Proof' },
   description:
-    "Outil interne d'Entretien Allstars : réception des envois photo, détection du bâtiment et confirmation du classement.",
+    "Proof, la plateforme interne d'Allstars Maintenance : ce qui attend l'équipe et ce qui presse, en Réception, Interventions, ClearSite et Répertoire.",
   generator: 'v0.app',
 }
 
